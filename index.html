@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أثاث من المصنع – اربح وبيع بسهولة | شركة ابو زياد للتجارة و النجارة</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    
+    <!-- إضافة مكتبة EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #795548; --secondary-color: #E67E22; --bg-light: #FDFCFB; --bg-alt: #F7F5F2; 
+            --text-dark: #2c2c2c; --text-light: #FFFFFF; --border-color: #d7ccc8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Cairo', sans-serif; direction: rtl; background-color: var(--bg-light); color: var(--text-dark); line-height: 1.8; overflow-x: hidden; }
+        .container { max-width: 1100px; margin: auto; padding: 0 20px; }
+        section { padding: 100px 0; opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        section.visible { opacity: 1; transform: translateY(0); }
+        h2 { text-align: center; font-size: 2.8rem; font-weight: 900; color: var(--primary-color); margin-bottom: 20px; position: relative; }
+        h2::after { content: ''; display: block; width: 70px; height: 4px; background: var(--secondary-color); border-radius: 2px; margin: 20px auto 0; }
+        .section-subtitle { text-align: center; max-width: 600px; margin: 0 auto 50px auto; font-size: 1.1rem; color: #666; }
+        .cta-button { display: inline-block; background-image: linear-gradient(45deg, var(--secondary-color), #ff9a4a); color: var(--text-light); padding: 15px 35px; font-size: 1.1rem; font-weight: 700; text-decoration: none; border-radius: 50px; box-shadow: 0 10px 20px rgba(230, 126, 34, 0.3); transition: all 0.4s ease; border: none; cursor: pointer; }
+        .cta-button:hover { transform: translateY(-5px); box-shadow: 0 15px 25px rgba(230, 126, 34, 0.4); }
+        
+        .hero { background: linear-gradient(rgba(45, 30, 24, 0.7), rgba(45, 30, 24, 0.7)), url(https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80) center center/cover no-repeat; height: 100vh; color: var(--text-light); display: flex; justify-content: center; align-items: center; text-align: center; }
+        .hero-content { opacity: 1; }
+        .hero h1 { font-size: 4rem; font-weight: 900; margin-bottom: 20px; text-shadow: 0 3px 10px rgba(0,0,0,0.5); }
+        .hero p { font-size: 1.5rem; max-width: 700px; margin: 0 auto 40px auto; opacity: 0.9; }
+        
+        #products { background-color: var(--bg-alt); }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .product-card { background: var(--text-light); border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.07); text-align: center; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        .product-card img { width: 100%; height: 220px; object-fit: cover; background-color: #f0f0f0; }
+        .product-card h3 { padding: 25px 15px; font-size: 1.4rem; color: var(--primary-color); font-weight: 700; }
+
+        .custom-order-section { text-align: center; padding: 40px; margin: 60px auto 0 auto; background-color: white; border: 2px dashed var(--secondary-color); border-radius: 15px; max-width: 900px; }
+        .custom-order-section i { font-size: 3rem; color: var(--primary-color); margin-bottom: 15px; }
+        .custom-order-section h3 { font-size: 2rem; color: var(--primary-color); }
+        .custom-order-section p { max-width: 700px; margin: 15px auto 0 auto; }
+
+        .commission-examples { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+        .example { background: white; padding: 30px; border-radius: 12px; text-align: center; width: 320px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); border-top: 5px solid var(--secondary-color); }
+        .example i { font-size: 2.5rem; color: var(--secondary-color); margin-bottom: 15px; }
+        .example h4 { font-size: 1.5rem; color: var(--primary-color); } .example .price { font-size: 1.2rem; }
+        .example .your-commission { font-size: 2rem; font-weight: 900; color: #27ae60; }
+        .commission-callout { text-align: center; margin-top: 50px; font-size: 1.4rem; font-weight: 700; background: var(--bg-alt); padding: 25px; border-radius: 12px; }
+
+        #form-section { background-color: var(--bg-alt); }
+        .form-container { max-width: 700px; margin: auto; background: white; padding: 50px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; margin-bottom: 10px; font-weight: 700; color: var(--primary-color); }
+        .form-group input[type="text"], .form-group input[type="tel"], .form-group textarea { width: 100%; padding: 15px; border: 1px solid var(--border-color); border-radius: 8px; font-family: 'Cairo', sans-serif; font-size: 1rem; transition: border-color 0.3s, box-shadow 0.3s; }
+        .form-group input[type="text"]:focus, .form-group input[type="tel"]:focus, .form-group textarea:focus { outline: none; border-color: var(--secondary-color); box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.2); }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .interest-group { display: flex; gap: 20px; }
+        .interest-group input[type="radio"] { display: none; }
+        .interest-group label { padding: 12px 20px; border: 2px solid var(--border-color); border-radius: 8px; cursor: pointer; transition: all 0.3s ease; width: 100%; text-align: center; }
+        .interest-group input[type="radio"]:checked + label { background-color: var(--secondary-color); border-color: var(--secondary-color); color: white; font-weight: 700; }
+        
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .gallery-item { overflow: hidden; border-radius: 12px; position: relative; box-shadow: 0 5px 25px rgba(0,0,0,0.07); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .gallery-item:hover img { transform: scale(1.1); }
+        
+        #testimonials { background-color: var(--bg-alt); }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .testimonial-card { background-color: #fff; padding: 35px; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.07); position: relative; }
+        .testimonial-card::before { content: '\f10d'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; top: -20px; right: 25px; font-size: 4rem; color: var(--secondary-color); opacity: 0.1; }
+        .testimonial-card blockquote { font-size: 1.1rem; margin-bottom: 20px; font-style: italic; }
+        .testimonial-card cite { font-weight: 700; color: var(--primary-color); }
+        
+        .comments-container { max-width: 800px; margin: auto; }
+        .comments-list { list-style: none; padding: 0; margin-bottom: 50px; }
+        .comment-item { display: flex; gap: 20px; padding: 20px; background-color: #fff; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.07); margin-bottom: 20px; }
+        .comment-avatar { flex-shrink: 0; width: 50px; height: 50px; background-color: var(--border-color); color: var(--primary-color); display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1.5rem; font-weight: 700; }
+        .comment-content .comment-author { font-weight: 700; color: var(--primary-color); margin-bottom: 5px; }
+        .comment-content .comment-date { font-size: 0.85rem; color: #888; margin-bottom: 10px; }
+        .comment-content p { font-size: 1rem; line-height: 1.6; margin-bottom: 0; }
+        .add-comment-form h3 { text-align: right; color: var(--primary-color); font-size: 1.5rem; margin-bottom: 20px; }
+
+        footer { background-color: #382e28; color: #e0e0e0; padding: 80px 0 40px 0; opacity: 1; transform: none; }
+        footer h2 { color: var(--text-light); }
+        .contact-content { text-align: center; }
+        .contact-buttons { margin-top: 30px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .contact-button { display: inline-flex; align-items: center; gap: 15px; padding: 15px 35px; border-radius: 50px; text-decoration: none; font-weight: 700; transition: all 0.3s; font-size: 1.1rem; }
+        .contact-button:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .whatsapp { background-color: #25D366; color: white; }
+        .phone { background-color: var(--bg-light); color: var(--text-dark); }
+        .social-links { margin-top: 50px; }
+        .social-links p { font-size: 1.1rem; }
+        .social-links a { color: var(--text-light); font-size: 1.8rem; margin: 0 15px; text-decoration: none; transition: color 0.3s; }
+        .social-links a:hover { color: var(--secondary-color); }
+        .copyright { margin-top: 50px; font-size: 0.9rem; opacity: 0.6; }
+
+        @media(max-width: 768px) {
+            h2 { font-size: 2.2rem; } .hero h1 { font-size: 2.8rem; } .hero p { font-size: 1.2rem; }
+            section { padding: 80px 0; } .interest-group { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>اربح من بيع الأثاث – بدون رأس مال!</h1>
+            <p>ابدأ شغلك من اليوم وحقق دخل إضافي عبر بيع أثاث بجودة عالية وأسعار تنافسية من المصنع مباشرة.</p>
+            <a href="#form-section" class="cta-button">سجّل الآن وابدأ الربح</a>
+        </div>
+    </header>
+    
+    <main>
+        <section id="products">
+            <div class="container">
+                <h2>منتجاتنا عالية الجودة</h2>
+                <p class="section-subtitle">تصفح أحدث منتجاتنا المصنعة بعناية لتلبية جميع الأذواق.</p>
+                <div class="products-grid" id="products-grid-container"><p style="text-align:center; font-weight: bold;">جاري تحميل المنتجات...</p></div>
+                <div class="custom-order-section">
+                    <i class="fas fa-drafting-compass"></i>
+                    <h3>نصنع أحلامك واقعاً</h3>
+                    <p>هل لديك تصميم خاص أو فكرة معينة؟ نقوم بتفصيل الأثاث حسب الطلب ليناسب مساحتك وذوقك الفريد. تواصل معنا لمزيد من التفاصيل وابدأ في تصميم قطعة أحلامك اليوم!</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="commission">
+            <div class="container">
+                <h2>كيف تربح معنا؟ ببساطة!</h2>
+                <p class="section-subtitle">مهمتك التسويق، ومهمتنا التصنيع والتوصيل والتركيب. عمولتك مضمونة على كل قطعة تبيعها.</p>
+                <div class="commission-examples">
+                    <div class="example"><i class="fas fa-table-cells-large"></i><h4>مثال 1: بيع طاولة</h4><p class="price">سعر البيع: <strong>400 ₪</strong></p><p class="your-commission">عمولتك 120 ₪</p></div>
+                    <div class="example"><i class="fas fa-bed"></i><h4>مثال 2: بيع غرفة نوم</h4><p class="price">سعر البيع: <strong>2000 ₪</strong></p><p class="your-commission">عمولتك 600 ₪</p></div>
+                </div>
+                <p class="commission-callout">لا تحتاج رأس مال، فقط سوّق ونحن نوصل!</p>
+            </div>
+        </section>
+
+        <section id="form-section">
+            <div class="container">
+                <h2>انضم إلينا الآن!</h2>
+                <p class="section-subtitle">املأ النموذج وسنتواصل معك خلال 24 ساعة لتزويدك بالكتالوج والأسعار وبدء رحلتك في الربح.</p>
+                <div class="form-container">
+                    <form id="lead-form">
+                        <div class="form-group"><label for="fullName">الاسم الكامل</label><input type="text" id="fullName" name="full_name" placeholder="مثال: أحمد علي" required></div>
+                        <div class="form-group"><label for="phone">رقم الهاتف (واتساب)</label><input type="tel" id="phone" name="phone_number" placeholder="مثال: 059xxxxxxx" required></div>
+                        <div class="form-group"><label for="city">المحافظة / المدينة</label><input type="text" id="city" name="city" placeholder="مثال: رام الله" required></div>
+                        <div class="form-group"><label>أنا مهتم بـ:</label><div class="interest-group"><input type="radio" id="reseller" name="interest_type" value="وسيط" checked><label for="reseller">البيع مقابل عمولة (وسيط)</label><input type="radio" id="buyer" name="interest_type" value="زبون مباشر"><label for="buyer">الشراء المباشر (زبون)</label></div></div>
+                        <button type="submit" class="cta-button">سجّل الآن</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        
+        <section id="gallery">
+            <div class="container">
+                <h2>شاهد الجودة بنفسك</h2>
+                <p class="section-subtitle">صور حقيقية من داخل مصنعنا ومنتجات تم تسليمها لعملائنا بكل فخر.</p>
+                <div class="gallery-grid">
+                    <div class="gallery-item"><img src="https://via.placeholder.com/400x300/795548/FFFFFF?text=غرفة+نوم+جاهزة" alt="غرفة نوم جاهزة"></div>
+                    <div class="gallery-item"><img src="https://via.placeholder.com/400x300/A0522D/FFFFFF?text=مطبخ+مركب" alt="مطبخ مركب"></div>
+                    <div class="gallery-item"><img src="https://via.placeholder.com/400x300/D2B48C/FFFFFF?text=تفاصيل+الخشب" alt="تفاصيل الخشب"></div>
+                    <div class="gallery-item"><img src="https://via.placeholder.com/400x300/BC8F8F/FFFFFF?text=خزانة+مفصلة" alt="خزانة مفصلة"></div>
+                    <div class="gallery-item"><img src="https://via.placeholder.com/400x300/DEB887/FFFFFF?text=مكتب+خشبي" alt="مكتب خشبي"></div>
+                    <div class="gallery-item"><img src="https://via.placeholder.com/400x300/8B4513/FFFFFF?text=تجميع+الأثاث" alt="تجميع الأثاث"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials">
+            <div class="container">
+                <h2>شركاؤنا وعملاؤنا يثقون بنا</h2>
+                <div class="testimonials-grid" id="testimonials-grid-container"><p style="text-align:center; font-weight: bold;">جاري تحميل الآراء...</p></div>
+            </div>
+        </section>
+        
+        <section id="comments">
+            <div class="container">
+                <h2>شاركنا رأيك أو استفسارك</h2>
+                <p class="section-subtitle">نرحب بجميع تعليقاتكم واستفساراتكم. فريقنا يقرأ كل التعليقات للتحسين المستمر.</p>
+                <div class="comments-container">
+                    <ul class="comments-list">
+                        <li class="comment-item"><div class="comment-avatar">س</div><div class="comment-content"><div class="comment-author">سارة، نابلس</div><div class="comment-date">منذ يومين</div><p>يعطيكم العافية، هل ممكن تفصيل مطبخ بتصميم معين من عندي؟ وشكراً على الشغل المرتب.</p></div></li>
+                        <li class="comment-item"><div class="comment-avatar">ع</div><div class="comment-content"><div class="comment-author">علي، القدس</div><div class="comment-date">منذ أسبوع</div><p>أنا وسيط جديد، حابب أشكركم على سرعة التواصل وتوفير كل الصور والأسعار. متحمس أبدأ شغل.</p></div></li>
+                    </ul>
+                    <div class="add-comment-form">
+                        <h3>أضف تعليقك</h3>
+                        <form id="comment-form">
+                            <div class="form-group"><label for="commentName">الاسم</label><input type="text" id="commentName" name="author_name" placeholder="اسمك الكريم" required></div>
+                            <div class="form-group"><label for="commentText">تعليقك</label><textarea id="commentText" name="comment_text" placeholder="اكتب استفسارك أو رأيك هنا..." required></textarea></div>
+                            <button type="submit" class="cta-button">أرسل التعليق</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="contact-content">
+                <h2>هل لديك استفسار؟ تواصل معنا مباشرة</h2>
+                <p class="section-subtitle" style="color: #ccc;">فريقنا جاهز للرد على جميع أسئلتك سواء كنت مهتماً بالبيع أو الشراء.</p>
+                <div class="contact-buttons">
+                    <a href="https://wa.me/+972000000000" target="_blank" class="contact-button whatsapp"><i class="fab fa-whatsapp"></i> تواصل معنا عبر واتساب</a>
+                    <a href="tel:+972000000000" class="contact-button phone"><i class="fas fa-phone"></i> اتصل بنا</a>
+                </div>
+                <div class="social-links">
+                    <p><strong>موقع المصنع:</strong> [أضف عنوان المصنع هنا، مثلاً: المنطقة الصناعية - نابلس]</p>
+                    <p>تابعنا على:</p>
+                    <a href="#" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-square"></i></a>
+                    <a href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+                <p class="copyright">© 2024 شركة ابو زياد للتجارة و النجارة. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const API_URL = 'https://sheetdb.io/api/v1/jrb7zoy82ghzg';
+
+        // --- (مهم) إعدادات EmailJS ---
+        const EMAILJS_SERVICE_ID = 'service_5ldj2ds';      // <-- تم وضع الـ ID الخاص بك
+        const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';    // <-- ضع الـ Template ID هنا
+        const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';      // <-- ضع الـ Public Key هنا
+
+        // تهيئة EmailJS عند تحميل الصفحة
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+
+        // --- 1. سكربت التأثيرات الحركية ---
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('section').forEach(section => observer.observe(section));
+        
+        // --- 2. سكربت ربط نماذج الإرسال مع إشعار الإيميل ---
+        const leadForm = document.getElementById('lead-form');
+        const commentForm = document.getElementById('comment-form');
+        leadForm.addEventListener('submit', e => handleFormSubmit(e, 'leads'));
+        commentForm.addEventListener('submit', e => handleFormSubmit(e, 'comments'));
+        
+        async function handleFormSubmit(e, sheetName) {
+            e.preventDefault();
+            const form = e.target;
+            const submitButton = form.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+            submitButton.disabled = true;
+            submitButton.textContent = 'جاري الإرسال...';
+            
+            const formData = new FormData(form);
+            let dataToSend = Object.fromEntries(formData.entries());
+            
+            if (sheetName === 'leads') dataToSend.status = 'new';
+            if (sheetName === 'comments') dataToSend.status = 'pending';
+            dataToSend.created_at = new Date().toISOString();
+
+            try {
+                // الخطوة الأولى: إرسال البيانات إلى Google Sheet
+                const response = await fetch(`${API_URL}?sheet=${sheetName}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ data: [dataToSend] })
+                });
+                if (!response.ok) throw new Error('Failed to save to sheet.');
+
+                // الخطوة الثانية: إرسال إشعار بالإيميل (فقط لطلبات التسجيل)
+                if (sheetName === 'leads') {
+                    // التحقق من وجود المفاتيح قبل الإرسال
+                    if (EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && EMAILJS_PUBLIC_KEY) {
+                        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, dataToSend)
+                            .then(res => console.log('Email successfully sent!', res.status, res.text))
+                            .catch(err => console.error('Failed to send email. Check your EmailJS credentials.', err));
+                    } else {
+                        console.warn('EmailJS credentials are not set. Skipping email notification.');
+                    }
+                }
+                
+                alert(sheetName === 'leads' ? 'تم التسجيل بنجاح! سنتواصل معك قريباً.' : 'شكراً لتعليقك! سيتم مراجعته قريباً.');
+                form.reset();
+            } catch (error) {
+                console.error('Form submission error:', error);
+                alert('حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = originalButtonText;
+            }
+        }
+
+        // --- 3. سكربت جلب المحتوى الديناميكي ---
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchAndRenderContent('products', 'products-grid-container', renderProductCard);
+            fetchAndRenderContent('testimonials', 'testimonials-grid-container', renderTestimonialCard);
+        });
+
+        async function fetchAndRenderContent(sheetName, containerId, renderFunction) {
+            const container = document.getElementById(containerId);
+            try {
+                const response = await fetch(`${API_URL}?sheet=${sheetName}`);
+                if (!response.ok) throw new Error('Failed to fetch content');
+                const items = await response.json();
+                
+                container.innerHTML = '';
+                if (items.length === 0) {
+                    container.innerHTML = `<p style="text-align: center;">لا يوجد محتوى لعرضه حالياً.</p>`;
+                    if (sheetName === 'testimonials') container.style.display = 'none';
+                    return;
+                }
+                
+                items.forEach(item => container.innerHTML += renderFunction(item));
+            } catch (error) {
+                console.error(`Error fetching ${sheetName}:`, error);
+                container.innerHTML = `<p style="text-align: center;">حدث خطأ أثناء تحميل المحتوى.</p>`;
+            }
+        }
+
+        function renderProductCard(product) {
+            return `
+                <div class="product-card">
+                    <img src="${product.image_url}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300x220/f0f0f0/ccc?text=Image+Not+Found'">
+                    <h3>${product.name}</h3>
+                </div>`;
+        }
+
+        function renderTestimonialCard(testimonial) {
+            return `
+                <div class="testimonial-card">
+                    <blockquote>${testimonial.quote_text}</blockquote>
+                    <cite>– ${testimonial.author_name}, ${testimonial.author_info}</cite>
+                </div>`;
+        }
+    </script>
+</body>
+</html>
